@@ -11,10 +11,12 @@ Works with "Format Document" command and "editor.formatOnSave" file setting for 
 ## Configuration
 
 ```javascript
-{
-  // Executing sql from PATH otherwise...
-  "oracle-format.sqlcl": "/absolute/path/to/sql.exe",
-  // Using default formatter settings otherwise...
-  "oracle-format.rules": "/absolute/path/to/style.xml"
-}
+// Executing sql from PATH otherwise...
+"oracle-format.sqlcl": "/absolute/path/to/sql.exe",
+// Using default formatter settings otherwise...
+"oracle-format.rules": "/absolute/path/to/style.xml"
 ```
+
+## Prerequisites
+
+- Oracle SQLcl
