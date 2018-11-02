@@ -2,23 +2,25 @@
 
 import * as vscode from "vscode";
 import { exec } from "child_process";
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
+import { join } from "path";
 
-function execPromise(cmd: string): Thenable<any> {
+function execPromise(cmd: string): Promise<any> {
   return new Promise(function(resolve, reject) {
     exec(cmd, (error, stdout, stderr) => {
       if (error) {
         reject(error);
-        return;
       }
-      resolve(stdout.trim());
+      resolve(stdout);
     });
   });
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  vscode.languages.registerDocumentFormattingEditProvider("plsql", {
-    async provideDocumentFormattingEdits(
-      document: vscode.TextDocument
+  vscode.languages.registerDocumentRangeFormattingEditProvider("plsql", {
+    async provideDocumentRangeFormattingEdits(
+      document: vscode.TextDocument,
+      range: vscode.Range
     ): Promise<vscode.TextEdit[] | undefined> {
       const sqlPath = vscode.workspace
         .getConfiguration("oracle-format")
@@ -28,7 +30,8 @@ export function activate(context: vscode.ExtensionContext) {
         .getConfiguration("oracle-format")
         .get("rules");
 
-      const file = document.fileName;
+      const storagePath = context.storagePath || context.extensionPath;
+      const file = join(storagePath, `format_temp.sql`);
 
       const cmd = rulesPath
         ? `(echo format rules ${rulesPath} & echo format file ${file} ${file}) | "${sqlPath}" /nolog`
@@ -37,11 +40,21 @@ export function activate(context: vscode.ExtensionContext) {
       let execThen;
       let res;
       try {
+        // Save formatting text to temporary file
+        if (!existsSync(storagePath)) {
+          mkdirSync(storagePath);
+        }
+        writeFileSync(file, document.getText(range));
+
+        // Execute formating with SqlCl on temp file
         execThen = execPromise(cmd);
         vscode.window.setStatusBarMessage("Formatting...", execThen);
         res = await execThen;
         console.log(res);
-        return;
+
+        // Read formatted content from file and replace content in editor
+        const content = readFileSync(file);
+        return [vscode.TextEdit.replace(range, content.toString())];
       } catch (error) {
         vscode.window.showErrorMessage(error.message);
       }

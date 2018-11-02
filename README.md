@@ -6,14 +6,14 @@ Inspired by [atom-oracle-format](https://github.com/diesire/atom-oracle-format) 
 
 ## Usage
 
-Works with "Format Document" command and "editor.formatOnSave" file setting for "plsql" language files.
+Works with `Format Document`, `Format Selection` commands and `editor.formatOnSave` setting for `plsql` language files.
 
 ## Configuration
 
 ```javascript
-// Executing sql from PATH otherwise...
+// (Optional) Executing sql from PATH otherwise...
 "oracle-format.sqlcl": "/absolute/path/to/sql.exe",
-// Using default formatter settings otherwise...
+// (Optional) Using default formatter settings otherwise...
 "oracle-format.rules": "/absolute/path/to/style.xml"
 ```
 
