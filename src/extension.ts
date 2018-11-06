@@ -16,6 +16,19 @@ function execPromise(cmd: string): Promise<any> {
   });
 }
 
+function parseOutputForErrors(input: string) {
+  // Catch "parse error"
+  if (input.search(/parse error/i) !== -1) {
+    throw Error("Skipped formatting: parse error");
+  }
+  // Catch any unknow "error"
+  const reg = /^.*error.*$/gim;
+  const s = reg.exec(input);
+  if (s !== null) {
+    throw Error(s[0]);
+  }
+}
+
 export function activate(context: vscode.ExtensionContext) {
   vscode.languages.registerDocumentRangeFormattingEditProvider("plsql", {
     async provideDocumentRangeFormattingEdits(
@@ -51,6 +64,9 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.setStatusBarMessage("Formatting...", execThen);
         res = await execThen;
         console.log(res);
+
+        // Lookup for errors
+        parseOutputForErrors(res);
 
         // Read formatted content from file and replace content in editor
         const content = readFileSync(file);
