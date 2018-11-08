@@ -2,7 +2,7 @@
   "name": "vscode-oracle-format",
   "displayName": "oracle-format",
   "description": "PL/SQL formatter (using SQLcl)",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "mp",
   "engines": {
     "vscode": "^1.25.0"
@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "typescript": "^2.6.1",
-    "vscode": "^1.1.6",
+    "vscode": "^1.1.21",
     "tslint": "^5.8.0",
     "@types/node": "^7.0.43",
     "@types/mocha": "^2.2.42"

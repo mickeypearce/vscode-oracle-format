@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.5]
+
+- Added print formatting command to console [#5](https://github.com/mickeypearce/vscode-oracle-format/issues/5)
+
 ## [0.0.4]
 
 - Added parse error notification [#3](https://github.com/mickeypearce/vscode-oracle-format/issues/3)

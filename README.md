@@ -17,6 +17,12 @@ Works with `Format Document`, `Format Selection` commands and `editor.formatOnSa
 "oracle-format.rules": "/absolute/path/to/style.xml"
 ```
 
+When using with "formatOnSave" I suggest increasing default timeout as formatting takes quite some time for larger files:
+```javascript
+"editor.formatOnSaveTimeout": 10000
+```
+
 ## Prerequisites
 
 - Oracle SQLcl
+- [Language PL/SQL](https://marketplace.visualstudio.com/items?itemName=xyz.plsql-language)

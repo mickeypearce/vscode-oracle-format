@@ -47,8 +47,9 @@ export function activate(context: vscode.ExtensionContext) {
       const file = join(storagePath, `format_temp.sql`);
 
       const cmd = rulesPath
-        ? `(echo format rules ${rulesPath} & echo format file ${file} ${file}) | "${sqlPath}" /nolog`
-        : `(echo format file ${file} ${file}) | "${sqlPath}" /nolog`;
+        ? `(echo format rules ${rulesPath} & echo format file "${file}" "${file}") | "${sqlPath}" /nolog`
+        : `(echo format file "${file}" "${file}") | "${sqlPath}" /nolog`;
+      console.log(cmd);
 
       let execThen;
       let res;
