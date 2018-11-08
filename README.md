@@ -26,3 +26,6 @@ When using with "formatOnSave" I suggest increasing default timeout as formattin
 
 - Oracle SQLcl
 - [Language PL/SQL](https://marketplace.visualstudio.com/items?itemName=xyz.plsql-language)
+
+## Note
+The output from SQLcl command is printed to Developer Tools Console (Ctrl+Shift+I).

@@ -1,8 +1,8 @@
 # Change Log
 
-## [0.0.5]
+## [0.0.6]
 
-- Added print formatting command to console [#5](https://github.com/mickeypearce/vscode-oracle-format/issues/5)
+- Fixed SQLcl command quotations [#5](https://github.com/mickeypearce/vscode-oracle-format/issues/5)
 
 ## [0.0.4]
 

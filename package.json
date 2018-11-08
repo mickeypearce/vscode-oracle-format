@@ -2,7 +2,7 @@
   "name": "vscode-oracle-format",
   "displayName": "oracle-format",
   "description": "PL/SQL formatter (using SQLcl)",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "mp",
   "engines": {
     "vscode": "^1.25.0"
