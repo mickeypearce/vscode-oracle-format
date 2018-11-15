@@ -30,6 +30,8 @@ function parseOutputForErrors(input: string) {
 }
 
 export function activate(context: vscode.ExtensionContext) {
+  const output = vscode.window.createOutputChannel("oracle-format");
+
   vscode.languages.registerDocumentRangeFormattingEditProvider("plsql", {
     async provideDocumentRangeFormattingEdits(
       document: vscode.TextDocument,
@@ -61,7 +63,7 @@ exit`;
 
       // Cmd command to execute script file with sqlcl
       const cmd = `"${sqlPath}" /nolog @${formatScript}`;
-      console.log(cmd);
+      output.appendLine(cmd);
 
       let execThen;
       let res;
@@ -76,7 +78,7 @@ exit`;
         execThen = execPromise(cmd);
         vscode.window.setStatusBarMessage("Formatting...", execThen);
         res = await execThen;
-        console.log(res);
+        output.appendLine(res);
 
         // Lookup for errors
         parseOutputForErrors(res);

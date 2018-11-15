@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.0.7]
+
+- Format with intermediate script file [#6](https://github.com/mickeypearce/vscode-oracle-format/issues/6)
+- Logging to output channel
+
 ## [0.0.6]
 
 - Fixed SQLcl command quotations [#5](https://github.com/mickeypearce/vscode-oracle-format/issues/5)
