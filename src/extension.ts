@@ -43,12 +43,24 @@ export function activate(context: vscode.ExtensionContext) {
         .getConfiguration("oracle-format")
         .get("rules");
 
+      // File content (document) is stored to a temp file for formatting
       const storagePath = context.storagePath || context.extensionPath;
-      const file = join(storagePath, `format_temp.sql`);
+      const tempFile = join(storagePath, `format_temp.sql`);
 
-      const cmd = rulesPath
-        ? `(echo format rules ${rulesPath} & echo format file \"${file}\" \"${file}\") | "${sqlPath}" /nolog`
-        : `(echo format file \"${file}\" \"${file}\") | "${sqlPath}" /nolog`;
+      // We store sqlcl format commands in a script file
+      const cmdScript = rulesPath
+        ? `set echo on
+format rules ${rulesPath}
+format file "${tempFile}" "${tempFile}"
+exit`
+        : `set echo on
+format file "${tempFile}" "${tempFile}"
+exit`;
+      const formatScript = join(storagePath, "format.sql");
+      writeFileSync(formatScript, cmdScript);
+
+      // Cmd command to execute script file with sqlcl
+      const cmd = `"${sqlPath}" /nolog @${formatScript}`;
       console.log(cmd);
 
       let execThen;
@@ -58,7 +70,7 @@ export function activate(context: vscode.ExtensionContext) {
         if (!existsSync(storagePath)) {
           mkdirSync(storagePath);
         }
-        writeFileSync(file, document.getText(range));
+        writeFileSync(tempFile, document.getText(range));
 
         // Execute formating with SqlCl on temp file
         execThen = execPromise(cmd);
@@ -70,7 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
         parseOutputForErrors(res);
 
         // Read formatted content from file and replace content in editor
-        const content = readFileSync(file);
+        const content = readFileSync(tempFile);
         return [vscode.TextEdit.replace(range, content.toString())];
       } catch (error) {
         vscode.window.showErrorMessage(error.message);
