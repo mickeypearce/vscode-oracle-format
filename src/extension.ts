@@ -59,7 +59,6 @@ exit`
 format file "${tempFile}" "${tempFile}"
 exit`;
       const formatScript = join(storagePath, "format.sql");
-      writeFileSync(formatScript, cmdScript);
 
       // Cmd command to execute script file with sqlcl
       const cmd = `"${sqlPath}" /nolog @${formatScript}`;
@@ -68,10 +67,11 @@ exit`;
       let execThen;
       let res;
       try {
-        // Save formatting text to temporary file
+        // Write formatting text to temp file and script to temp file
         if (!existsSync(storagePath)) {
           mkdirSync(storagePath);
         }
+        writeFileSync(formatScript, cmdScript);
         writeFileSync(tempFile, document.getText(range));
 
         // Execute formating with SqlCl on temp file
