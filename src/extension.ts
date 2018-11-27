@@ -21,6 +21,10 @@ function parseOutputForErrors(input: string) {
   if (input.search(/parse error/i) !== -1) {
     throw Error("Skipped formatting: parse error");
   }
+  // Catch error loading rules
+  if (input.search(/cannot be opened/i) !== -1) {
+    throw Error("Formating rules cannot be loaded");
+  }
   // Catch any unknow "error"
   const reg = /^.*error.*$/gim;
   const s = reg.exec(input);
