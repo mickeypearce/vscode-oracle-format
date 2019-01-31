@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.0]
+
+- Referencing a relative path in configuration
+
 ## [0.0.7]
 
 - Format with intermediate script file [#6](https://github.com/mickeypearce/vscode-oracle-format/issues/6)

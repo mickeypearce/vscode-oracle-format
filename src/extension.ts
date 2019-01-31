@@ -3,7 +3,7 @@
 import * as vscode from "vscode";
 import { exec } from "child_process";
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
-import { join } from "path";
+import { join, resolve } from "path";
 
 function execPromise(cmd: string): Promise<any> {
   return new Promise(function(resolve, reject) {
@@ -35,19 +35,28 @@ function parseOutputForErrors(input: string) {
 
 export function activate(context: vscode.ExtensionContext) {
   const output = vscode.window.createOutputChannel("oracle-format");
+  const workspaceFolder = vscode.workspace.workspaceFolders![0].uri.fsPath;
 
   vscode.languages.registerDocumentRangeFormattingEditProvider("plsql", {
     async provideDocumentRangeFormattingEdits(
       document: vscode.TextDocument,
       range: vscode.Range
     ): Promise<vscode.TextEdit[] | undefined> {
-      const sqlPath = vscode.workspace
+      const sqlPathConfig: string = vscode.workspace
         .getConfiguration("oracle-format")
         .get("sqlcl");
 
-      const rulesPath = vscode.workspace
+      const rulesPathConfig: string = vscode.workspace
         .getConfiguration("oracle-format")
         .get("rules");
+
+      // Substutite ${workspaceFolder} variable in configuration paths
+      // "sqlcl" is "sql" by default (relative path is hardly a use-case but anyway...)
+      const sqlPath = sqlPathConfig.replace("${workspaceFolder}", workspaceFolder);
+      // "rules" is null by default
+      const rulesPath = rulesPathConfig
+        ? resolve(rulesPathConfig.replace("${workspaceFolder}", workspaceFolder))
+        : null;
 
       // File content (document) is stored to a temp file for formatting
       const storagePath = context.storagePath || context.extensionPath;

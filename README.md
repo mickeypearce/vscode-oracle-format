@@ -11,10 +11,15 @@ Works with `Format Document`, `Format Selection` commands and `editor.formatOnSa
 ## Configuration
 
 ```javascript
-// (Optional) Executing sql from PATH otherwise...
+// (Optional) Executing "sql" from PATH otherwise...
 "oracle-format.sqlcl": "/absolute/path/to/sql.exe",
 // (Optional) Using default formatter settings otherwise...
 "oracle-format.rules": "/absolute/path/to/style.xml"
+```
+
+To reference a relative path inside your workspace use "${workspaceFolder}" variable:
+```javascript
+"oracle-format.rules": "${workspaceFolder}/.vscode/style.xml"
 ```
 
 When using with "formatOnSave" I suggest increasing default timeout as formatting takes quite some time for larger files:
