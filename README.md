@@ -22,7 +22,14 @@ To reference a relative path inside your workspace use "${workspaceFolder}" vari
 "oracle-format.rules": "${workspaceFolder}/.vscode/style.xml"
 ```
 
-When using with "formatOnSave" I suggest increasing default timeout as formatting takes quite some time for larger files:
+### Format on Save
+
+If you are seeing the following warning message in the Developer Tools Console after running "formatOnSave":
+```bash
+WARN Aborted format on save after 750ms
+```
+
+then you need to increase the VS Code default timeout option as formatting can take quite some time for larger files:
 ```javascript
 "editor.formatOnSaveTimeout": 10000
 ```
