@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import { exec } from "child_process";
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
 import { join, resolve } from "path";
+import * as os from "os";
 
 function execPromise(cmd: string): Promise<any> {
   return new Promise(function(resolve, reject) {
@@ -63,14 +64,20 @@ export function activate(context: vscode.ExtensionContext) {
       const tempFile = join(storagePath, `format_temp.sql`);
 
       // We store sqlcl format commands in a script file
-      const cmdScript = rulesPath
+      let cmdScript = rulesPath
         ? `set echo on
 format rules ${rulesPath}
-format file \\\"${tempFile}\\\" \\\"${tempFile}\\\"
+format file "${tempFile}" "${tempFile}"
 exit`
         : `set echo on
-format file \\\"${tempFile}\\\" \\\"${tempFile}\\\"
+format file "${tempFile}" "${tempFile}"
 exit`;
+
+      // Escape double quotes on non-Win platforms
+      if (os.platform() !== "win32") {
+        cmdScript = cmdScript.replace(/"/g, "\\\"");
+      }
+
       const formatScript = join(storagePath, "format.sql");
 
       // Cmd command to execute script file with sqlcl
