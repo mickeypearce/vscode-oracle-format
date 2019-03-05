@@ -66,10 +66,10 @@ export function activate(context: vscode.ExtensionContext) {
       const cmdScript = rulesPath
         ? `set echo on
 format rules ${rulesPath}
-format file "${tempFile}" "${tempFile}"
+format file \\\"${tempFile}\\\" \\\"${tempFile}\\\"
 exit`
         : `set echo on
-format file "${tempFile}" "${tempFile}"
+format file \\\"${tempFile}\\\" \\\"${tempFile}\\\"
 exit`;
       const formatScript = join(storagePath, "format.sql");
 
