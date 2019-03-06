@@ -74,7 +74,7 @@ exit`;
       const formatScript = join(storagePath, "format.sql");
 
       // Cmd command to execute script file with sqlcl
-      const cmd = `"${sqlPath}" /nolog @${formatScript}`;
+      const cmd = `"${sqlPath}" /nolog @"${formatScript}"`;
       output.appendLine(cmd);
 
       let execThen;
