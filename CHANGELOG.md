@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.1.1]
+
+- Fixed issue with quotes [PR #11](https://github.com/mickeypearce/vscode-oracle-format/issues/11)
+- Update readme on formatOnSave [#8](https://github.com/mickeypearce/vscode-oracle-format/issues/8)
+
 ## [0.1.0]
 
 - Referencing a relative path in configuration
