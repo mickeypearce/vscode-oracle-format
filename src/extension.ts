@@ -4,17 +4,9 @@ import * as vscode from "vscode";
 import { exec } from "child_process";
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
 import { join, resolve } from "path";
+import * as util from 'util';
 
-function execPromise(cmd: string): Promise<any> {
-  return new Promise(function(resolve, reject) {
-    exec(cmd, (error, stdout, stderr) => {
-      if (error) {
-        reject(error);
-      }
-      resolve(stdout);
-    });
-  });
-}
+const execPromise = util.promisify(exec);
 
 function parseOutputForErrors(input: string) {
   // Catch "parse error"
@@ -35,7 +27,6 @@ function parseOutputForErrors(input: string) {
 
 export function activate(context: vscode.ExtensionContext) {
   const output = vscode.window.createOutputChannel("oracle-format");
-  const workspaceFolder = vscode.workspace.workspaceFolders![0].uri.fsPath;
 
   vscode.languages.registerDocumentRangeFormattingEditProvider("plsql", {
     async provideDocumentRangeFormattingEdits(
@@ -51,6 +42,9 @@ export function activate(context: vscode.ExtensionContext) {
         .get("rules");
 
       // Substutite ${workspaceFolder} variable in configuration paths
+      const workspaceFolder = vscode.workspace.workspaceFolders
+        ? vscode.workspace.workspaceFolders[0].uri.fsPath
+        : null;
       // "sqlcl" is "sql" by default (relative path is hardly a use-case but anyway...)
       const sqlPath = sqlPathConfig.replace("${workspaceFolder}", workspaceFolder);
       // "rules" is null by default
@@ -106,4 +100,4 @@ exit`;
   });
 }
 
-export function deactivate() {}
+export function deactivate() { }

@@ -2,10 +2,10 @@
   "name": "vscode-oracle-format",
   "displayName": "oracle-format",
   "description": "PL/SQL formatter (using SQLcl)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "mp",
   "engines": {
-    "vscode": "^1.25.0"
+    "vscode": "^1.30.0"
   },
   "categories": [
     "Formatters"
@@ -59,9 +59,9 @@
   },
   "devDependencies": {
     "@types/mocha": "^2.2.42",
-    "@types/node": "^7.0.43",
-    "tslint": "^5.8.0",
+    "@types/node": "^10.0.0",
+    "tslint": "^5.16.0",
     "typescript": "^2.6.1",
-    "vscode": "^1.1.33"
+    "vscode": "^1.1.34"
   }
 }

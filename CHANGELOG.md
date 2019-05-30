@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.2]
+
+- Fixed loading without a folder [#13](https://github.com/mickeypearce/vscode-oracle-format/issues/13)
+
 ## [0.1.1]
 
 - Fixed issue with quotes [PR #11](https://github.com/mickeypearce/vscode-oracle-format/issues/11)
