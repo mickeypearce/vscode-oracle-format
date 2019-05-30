@@ -8,7 +8,7 @@ import * as util from 'util';
 
 const execPromise = util.promisify(exec);
 
-function parseOutputForErrors(input: string) {
+function parseStringOutputForErrors(input: string) {
   // Catch "parse error"
   if (input.search(/parse error/i) !== -1) {
     throw Error("Skipped formatting: parse error");
@@ -22,6 +22,18 @@ function parseOutputForErrors(input: string) {
   const s = reg.exec(input);
   if (s !== null) {
     throw Error(s[0]);
+  }
+}
+
+function parseOutputForErrors(input: any) {
+  if (input['error']) {
+    throw Error(input.error);
+  }
+  if (input['stderr']) {
+    parseStringOutputForErrors(input.stderr);
+  }
+  if (input['stdout']) {
+    parseStringOutputForErrors(input.stdout);
   }
 }
 
@@ -85,10 +97,23 @@ exit`;
         execThen = execPromise(cmd);
         vscode.window.setStatusBarMessage("Formatting...", execThen);
         res = await execThen;
-        output.appendLine(res);
 
-        // Lookup for errors
-        parseOutputForErrors(res);
+        if(typeof res === 'string') {
+          output.appendLine(res);
+          // Lookup for errors
+          parseStringOutputForErrors(res);
+        } else {
+          if(res['error']) {
+            output.appendLine(`error: ${res.error}`);
+          }
+          if(res['stderr']) {
+            output.appendLine(`stderr: ${res.stderr}`);
+          }
+          if(res['stdout']) {
+            output.appendLine(`stdout: ${res.stdout}`);
+          }
+          parseOutputForErrors(res);
+        }
 
         // Read formatted content from file and replace content in editor
         const content = readFileSync(tempFile);
