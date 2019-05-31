@@ -1,0 +1,21 @@
+resources:
+  containers:
+    - container: linux_container
+      image: jeffersonhealth/node-oracle-instantclient
+
+jobs:
+  - job: Linux
+
+    pool:
+      name: Hosted Ubuntu 1604
+
+    container: linux_container
+
+    steps:
+      - task: NodeTool@0
+        displayName: "Use Node 10.x"
+        inputs:
+          versionSpec: 10.x
+
+      - script: npm install
+      - script: npm run test
