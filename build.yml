@@ -18,4 +18,5 @@ jobs:
           versionSpec: 10.x
 
       - script: npm install
+      - script: apt-get install libgtk3.0-0
       - script: npm run test
