@@ -1,7 +1,9 @@
 resources:
   containers:
-    - container: linux_container
+    - container: win_container
       image: jturco/oraclecore
+    - container: linux_container
+      image: jeffersonhealth/node-oracle-instantclient
 
 jobs:
   - job: Windows
@@ -9,7 +11,7 @@ jobs:
       name: Hosted Windows 2019 with VS2019
       demands: npm
 
-    container: linux_container
+    container: win_container
 
     steps:
       - task: NodeTool@0
