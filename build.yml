@@ -1,7 +1,7 @@
 resources:
   containers:
     - container: win_container
-      image: vkarmendra/aspnet-oracle
+      image: mkafifi/windowsoracleclient
     - container: linux_container
       image: jeffersonhealth/node-oracle-instantclient
 
