@@ -1,7 +1,7 @@
 resources:
   containers:
     - container: linux_container
-      image: jeffersonhealth/node-oracle-instantclient
+      image: jaspeen/oracle-11g
 
 jobs:
   - job: Linux
