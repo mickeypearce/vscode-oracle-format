@@ -1,7 +1,7 @@
 resources:
   containers:
     - container: linux_container
-      image: jaspeen/oracle-11g
+      image: datagrip/oracle
 
 jobs:
   - job: Linux
@@ -18,5 +18,4 @@ jobs:
           versionSpec: 10.x
 
       - script: npm install
-      - script: apt install -y libgtk3.0-0
       - script: npm run test
