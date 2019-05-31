@@ -1,7 +1,7 @@
 resources:
   containers:
     - container: linux_container
-      image: jturco/oraclecore
+      image: phongbv/oracledb_no_config
 
 jobs:
   - job: Linux
