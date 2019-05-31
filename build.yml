@@ -1,7 +1,7 @@
 resources:
   containers:
     - container: win_container
-      image: jturco/oraclecore
+      image: jeffersonhealth/node-oracle-instantclient
     - container: linux_container
       image: jeffersonhealth/node-oracle-instantclient
 
