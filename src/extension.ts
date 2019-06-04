@@ -8,7 +8,7 @@ import * as util from 'util';
 
 const execPromise = util.promisify(exec);
 
-function parseStringOutputForErrors(input: string) {
+function parseOutputForErrors(input: string) {
   // Catch "parse error"
   if (input.search(/parse error/i) !== -1) {
     throw Error("Skipped formatting: parse error");
@@ -25,33 +25,21 @@ function parseStringOutputForErrors(input: string) {
   }
 }
 
-function parseOutputForErrors(input: any) {
-  if (input['error']) {
-    throw Error(input.error);
-  }
-  if (input['stderr']) {
-    parseStringOutputForErrors(input.stderr);
-  }
-  if (input['stdout']) {
-    parseStringOutputForErrors(input.stdout);
-  }
-}
+const getSettings = () => vscode.workspace.getConfiguration("oracle-format");
 
 export function activate(context: vscode.ExtensionContext) {
   const output = vscode.window.createOutputChannel("oracle-format");
 
-  vscode.languages.registerDocumentRangeFormattingEditProvider("plsql", {
+  const languagesConfig: string = getSettings().get("languages");
+
+  vscode.languages.registerDocumentRangeFormattingEditProvider(languagesConfig, {
     async provideDocumentRangeFormattingEdits(
       document: vscode.TextDocument,
       range: vscode.Range
     ): Promise<vscode.TextEdit[] | undefined> {
-      const sqlPathConfig: string = vscode.workspace
-        .getConfiguration("oracle-format")
-        .get("sqlcl");
 
-      const rulesPathConfig: string = vscode.workspace
-        .getConfiguration("oracle-format")
-        .get("rules");
+      const sqlPathConfig: string = getSettings().get("sqlcl");
+      const rulesPathConfig: string = getSettings().get("rules");
 
       // Substutite ${workspaceFolder} variable in configuration paths
       const workspaceFolder = vscode.workspace.workspaceFolders
@@ -84,7 +72,6 @@ exit`;
       output.appendLine(cmd);
 
       let execThen;
-      let res;
       try {
         // Write formatting text to temp file and script to temp file
         if (!existsSync(storagePath)) {
@@ -96,24 +83,11 @@ exit`;
         // Execute formating with SqlCl on temp file
         execThen = execPromise(cmd);
         vscode.window.setStatusBarMessage("Formatting...", execThen);
-        res = await execThen;
+        const { stdout } = await execThen;
+        output.appendLine(stdout);
 
-        if(typeof res === 'string') {
-          output.appendLine(res);
-          // Lookup for errors
-          parseStringOutputForErrors(res);
-        } else {
-          if(res['error']) {
-            output.appendLine(`error: ${res.error}`);
-          }
-          if(res['stderr']) {
-            output.appendLine(`stderr: ${res.stderr}`);
-          }
-          if(res['stdout']) {
-            output.appendLine(`stdout: ${res.stdout}`);
-          }
-          parseOutputForErrors(res);
-        }
+        // Lookup for errors
+        parseOutputForErrors(stdout);
 
         // Read formatted content from file and replace content in editor
         const content = readFileSync(tempFile);

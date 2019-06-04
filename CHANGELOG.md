@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.4]
+
+- Added "oracle-format.languages" setting: Languages associated with formatter (plsql by default)
+
 ## [0.1.3]
 
 - Fixed input.search is not a function [#14](https://github.com/mickeypearce/vscode-oracle-format/issues/14)

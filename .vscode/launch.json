@@ -22,11 +22,10 @@
       "runtimeExecutable": "${execPath}",
       "args": [
         "${workspaceFolder}/testFolder",
+        "--extensions-dir=${workspaceRoot}/.", // no other extension loaded
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--extensionTestsPath=${workspaceFolder}/out/test"
       ],
-      "stopOnEntry": false,
-      "sourceMaps": true,
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
       "preLaunchTask": "npm: watch"
     }

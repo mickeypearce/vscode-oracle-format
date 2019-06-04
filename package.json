@@ -2,7 +2,7 @@
   "name": "vscode-oracle-format",
   "displayName": "oracle-format",
   "description": "PL/SQL formatter (using SQLcl)",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "mp",
   "engines": {
     "vscode": "^1.30.0"
@@ -11,7 +11,7 @@
     "Formatters"
   ],
   "activationEvents": [
-    "onLanguage:plsql"
+    "*"
   ],
   "keywords": [
     "plsql",
@@ -44,6 +44,12 @@
           "default": null,
           "required": false,
           "description": "SQLDeveloper formatter rules (.xml)"
+        },
+        "oracle-format.languages": {
+          "type": "array",
+          "default": ["plsql"],
+          "required": false,
+          "description": "Languages associated with formatter"
         }
       }
     }

@@ -1,4 +1,4 @@
-select
+SELECT
     1
-from
+FROM
     dual;
