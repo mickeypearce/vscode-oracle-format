@@ -47,7 +47,7 @@
         },
         "oracle-format.languages": {
           "type": "array",
-          "default": ["plsql"],
+          "default": ["plsql" , "oraclesql"],
           "required": false,
           "description": "Languages associated with formatter"
         }
