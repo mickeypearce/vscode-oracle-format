@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.5]
+
+- Added "oraclesql" language to the default languages associated with formatter [#16](https://github.com/mickeypearce/vscode-oracle-format/issues/16)
+
 ## [0.1.4]
 
 - Added "oracle-format.languages" setting: Languages associated with formatter (plsql by default)

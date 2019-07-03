@@ -6,7 +6,7 @@ Inspired by [atom-oracle-format](https://github.com/diesire/atom-oracle-format) 
 
 ## Usage
 
-Works with `Format Document`, `Format Selection` commands and `editor.formatOnSave` setting for `plsql` language files.
+Works with `Format Document`, `Format Selection` commands and `editor.formatOnSave` setting for `plsql` and `oraclesql`  language files.
 
 ## Configuration
 
@@ -15,6 +15,8 @@ Works with `Format Document`, `Format Selection` commands and `editor.formatOnSa
 "oracle-format.sqlcl": "/absolute/path/to/sql.exe",
 // (Optional) Using default formatter settings otherwise...
 "oracle-format.rules": "/absolute/path/to/style.xml"
+// (Optional) Change languages associated with formatter
+"oracle-format.languages": ["plsql" , "oraclesql"]
 ```
 
 To reference a relative path inside your workspace use "${workspaceFolder}" variable:
@@ -37,7 +39,7 @@ then you need to increase the VS Code default timeout option as formatting can t
 ## Prerequisites
 
 - Oracle SQLcl
-- [Language PL/SQL](https://marketplace.visualstudio.com/items?itemName=xyz.plsql-language)
+- [Language PL/SQL](https://marketplace.visualstudio.com/items?itemName=xyz.plsql-language) or [Oracle Developer Tools for VS Code](https://marketplace.visualstudio.com/items?itemName=Oracle.oracledevtools)
 
 ## Note
 The output from SQLcl command is printed to Output channel ("oracle-format").
