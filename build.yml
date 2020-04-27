@@ -5,48 +5,41 @@ resources:
     - container: linux_container
       image: jeffersonhealth/node-oracle-instantclient
 
-jobs:
-  - job: Windows
-    pool:
-      name: Hosted Windows Container
-      demands: npm
+trigger:
+- master
 
-    container: win_container
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-latest'
+      containerResource: linux_container
+    windows:
+      imageName: 'windows-2019'
+      containerResource: win_container
 
-    steps:
-      - task: NodeTool@0
-        displayName: "Use Node 10.x"
-        inputs:
-          versionSpec: 10.x
+pool:
+  vmImage: $(imageName)
+  demands: npm
 
-      - script: npm install
-      - script: npm run test
+container: $[ variables['containerResource'] ]
 
-  - job: Linux
-    pool:
-      name: Hosted Ubuntu 1604
-      demands: npm
-    steps:
-      - task: NodeTool@0
-        displayName: 'Use Node 10.x'
-        inputs:
-          versionSpec: 10.x
-      - task: Npm@1
-        displayName: 'Install dependencies'
-        inputs:
-          verbose: false
-      - task: Npm@1
-        displayName: 'Compile sources'
-        inputs:
-          command: custom
-          verbose: false
-          customCommand: 'run compile'
-      - script: |
-          set -e
-          /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
-          disown -ar
-        displayName: 'Start xvfb'
-      - script: 'node node_modules/vscode/bin/test'
-        displayName: 'Run tests'
-        env:
-          DISPLAY: :10  
+steps:
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- bash: |
+    /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+    echo ">>> Started xvfb"
+    sudo apt-get install -y libX11-xcb
+  displayName: Start xvfb
+  condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
+
+- bash: |
+    npm install
+    npm run test
+  displayName: Run Tests
+  env:
+    DISPLAY: ':99.0'
